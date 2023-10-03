@@ -1,23 +1,22 @@
-﻿@model List<Books>
+﻿
+@model List<User>
 @{
     int sn = 1;
 }
 <div class="d-flex justify-content-between">
     <h2>Book List</h2>
-    <a asp-action="Create" class="btn btn-success">Add Book</a>
+    <a asp-action="Create" class="btn btn-success">Add User</a>
 </div>
 
 <table class="table mt-4">
     <thead class="table-dark">
         <tr>
             <th>SN</th>
-            <th>Book Name</th>
-            <th>ISBN</th>
-            <th>Level</th>
-            <th>Publication</th>
-            <th>Book Author</th>
-            <th>Book Category</th>
-            <th>Book Count</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Faculty</th>
+            <th>User Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -27,12 +26,10 @@
             <tr>
                 <td>@(sn++)</td>
                 <td>@(item.Name)</td>
-                <td>@(item.ISBN)</td>
-                <td>@(item.Level)</td>
-                <td>@(item.Publication)</td>
-                <td>@(item.AuthorId)</td>
-                <td>@(item.CatagoryId)</td>
-                <td>@(item.Count)</td>
+                <td>@(item.Email)</td>
+                <td>@(item.Phone)</td>
+                <td>@(item.Faculty)</td>
+                <td>@(item.UserType)</td>
                 <td>
                     <div class="d-flex">
                         <a asp-action="Delete" asp-route-id="@(item.Id)" class="btn btn-danger">
@@ -40,9 +37,9 @@
                         </a>
 
                         @* <form asp-action="Delete" mathod="POST">
-                            <input hidden value="@(item.Id)" name="id">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form> *@
+                    <input hidden value="@(item.Id)" name="id">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    </form> *@
 
                         <form asp-action="Edit" method="GET">
                             <input hidden value="@(item.Id)" name="id">

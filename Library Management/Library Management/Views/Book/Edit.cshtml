@@ -2,7 +2,7 @@
 @{
 }
 <div class="d-flex justify-content-between">
-    <h2>Add Book</h2>
+    <h2>Add Books</h2>
     <a asp-action="Index" class="btn btn-secondary">Go Back</a>
 </div>
 <hr />
@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-6">
           
-                <form asp-action="EditConfirm" method="POST">
+                <form asp-action="Edit" method="POST">
                     <input hidden name="id" value="@(Model.Id)">
                     <div class="row">
                         <div class="col-2">

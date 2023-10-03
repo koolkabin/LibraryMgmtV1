@@ -18,13 +18,15 @@ namespace Library_Management.Controllers
             var bookList = _context.Books.ToList();
             return View(bookList);
         }
-        //Get
+        
+        //Get for ADD New Data
         [HttpGet]
         public IActionResult Create()
         {
             return View();  
         }
-        //Post
+        
+        //Post for ADD New Data
         [HttpPost]
         public IActionResult Create(Books books)
         { 
@@ -41,7 +43,10 @@ namespace Library_Management.Controllers
             return RedirectToAction("Index","Book");
 
         }
-        [HttpPost]
+
+        //Post for Delete
+        //Or use Post Method for using the Form Method
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             Books value = _context.Books.Find(id);
@@ -50,15 +55,17 @@ namespace Library_Management.Controllers
             return RedirectToAction("Index","Book");
         }
 
-      
+        //GET for Edit Data
+        [HttpGet]
         public IActionResult Edit(int id)
         {
-            Books bookList = _context.Books.Where(x => x.Id == id).First();
-            return View(bookList);
+            Books book = _context.Books.Where(x => x.Id == id).First();
+            return View(book);
         }
 
+        //Post for Edit Data
         [HttpPost]
-        public IActionResult EditConfirm(Books books,int id)
+        public IActionResult Edit(Books books,int id)
         {
             Books value = _context.Books.Find(id);
             value.Name = books.Name;
