@@ -1,3 +1,17 @@
 ﻿@{
-    Layout = "_Layout";
+    string layout = "";
+
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
+
+    if (controllerName == "Student")
+    {
+        layout = "~/Views/Shared/_LayoutStudent.cshtml";
+    }
+    else
+    {
+        layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    Layout = layout;
 }
+

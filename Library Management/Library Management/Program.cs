@@ -1,10 +1,17 @@
 using Library_Management.Data;
+using Library_Management.Filters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add the StudentAuthorizeFilter service
+builder.Services.AddScoped<StudentAuthorizeFilter>();
+builder.Services.AddScoped<AdminAuthorizeFilter>();
+
+
 // Configuration
 IConfiguration configuration = new ConfigurationBuilder()
 .SetBasePath(Directory.GetCurrentDirectory())

@@ -1,4 +1,5 @@
 ﻿using Library_Management.Data;
+using Library_Management.Filters;
 using Library_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace Library_Management.Controllers
             _contextAccessor = httpContextAccessor;
         }
 
+        [ServiceFilter(typeof(AdminAuthorizeFilter))]
         public IActionResult Index()
         {
             var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
@@ -116,10 +118,6 @@ namespace Library_Management.Controllers
         }
 
         public IActionResult RejectBook(int Id)
-        {
-            return View();
-        }
-        public IActionResult ErrorPage()
         {
             return View();
         }

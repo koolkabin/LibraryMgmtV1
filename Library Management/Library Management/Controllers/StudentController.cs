@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Library_Management.Models;
 using Microsoft.AspNetCore.Http;
+using Library_Management.Filters;
 
 namespace Library_Management.Controllers
 {
@@ -15,20 +16,23 @@ namespace Library_Management.Controllers
             _context = context;
             _contextAccessor = httpContextAccessor;
         }
+
+        [ServiceFilter(typeof(StudentAuthorizeFilter))]
         public IActionResult Index()
         {
-            if (_contextAccessor.HttpContext.Session.GetInt32("userId") == null)
-            {
-                return RedirectToAction("Index", "Account");
-            }
-            if (_contextAccessor.HttpContext.Session.GetString("userType") == "Admin")
-            {
-                return RedirectToAction("ErrorPage", "Book");
-            }
+            //if (_contextAccessor.HttpContext.Session.GetInt32("userId") == null)
+            //{
+            //    return RedirectToAction("Index", "Account");
+            //}
+            //if (_contextAccessor.HttpContext.Session.GetString("userType") == "Admin")
+            //{
+            //    return RedirectToAction("ErrorPage", "Book");
+            //}
             var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
             return View(bookList);
         }
 
+        [ServiceFilter(typeof(StudentAuthorizeFilter))]
         public IActionResult MyRequestBook()
         {
             var myReqBookList = _context.RequestBooks.Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId")).Include(x => x.Books).ToList();
