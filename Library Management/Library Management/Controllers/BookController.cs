@@ -1,6 +1,7 @@
 ﻿using Library_Management.Data;
 using Library_Management.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library_Management.Controllers
 {
@@ -8,14 +9,16 @@ namespace Library_Management.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        public BookController (ApplicationDbContext context)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public BookController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _contextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
-            var bookList = _context.Books.ToList();
+            var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
             return View(bookList);
         }
         
@@ -38,6 +41,7 @@ namespace Library_Management.Controllers
             value.Level = books.Level; 
             value.Count = books.Count;
             value.Publication = books.Publication;
+            value.UpdateDate = DateTime.Now;
             _context.Books.Add(value);
             _context.SaveChanges();
             return RedirectToAction("Index","Book");
@@ -79,6 +83,45 @@ namespace Library_Management.Controllers
             return RedirectToAction("Index", "Book");
 
         }
+        public IActionResult RequestBook(int bookId)
+        {
+            int? id = _contextAccessor.HttpContext.Session.GetInt32("userId");
 
+            RequestBook reqBook = new RequestBook();
+            reqBook.BookId = bookId;
+            reqBook.UserId = (int)id;
+            reqBook.RequestDate = DateTime.Now;
+            _context.RequestBooks.Add(reqBook);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index","Student");
+        }
+        public IActionResult RequestedBookList()
+        {
+            var reqBookList = _context.RequestBooks.Include(x => x.Books).Include(x => x.User).ToList();
+            return View(reqBookList);
+        }
+
+        public IActionResult AcceptBook(int Id)
+        {
+            var reqBook = _context.RequestBooks.Where(x=>x.Id==Id).FirstOrDefault();
+            var lentBook = new LentBook();
+            lentBook.UserId = reqBook.UserId;
+            lentBook.BookId = reqBook.BookId;
+            _context.LentBooks.Add(lentBook);
+            _context.RequestBooks.Remove(reqBook);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Book");
+        }
+
+        public IActionResult RejectBook(int Id)
+        {
+            return View();
+        }
+        public IActionResult ErrorPage()
+        {
+            return View();
+        }
     }
 }

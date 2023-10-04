@@ -15,17 +15,19 @@ namespace Library_Management.Models
         [Required]
         public string Phone { get; set; }
         [Required]
+        public string Password { get; set; }
+        [Required]
         public string Faculty { get; set; }
+        public int Status { get; set; }
         public EnumUserType UserType { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; }
 
         public ICollection<LentBook> LentBook { get; set; }
         public ICollection<ReturnBook> ReturnBook { get; set; }
-
+        public ICollection<RequestBook> RequestBook { get; set; }
 
     }
-
     public enum EnumUserType
     {
         Admin = 1,

@@ -14,6 +14,7 @@ namespace Library_Management.Controllers
 
         public IActionResult Index()
         {
+            
             var Userlist = _context.Users.ToList();
             return View(Userlist);
         }
@@ -34,6 +35,7 @@ namespace Library_Management.Controllers
             value.Name = users.Name;
             value.Email = users.Email;
             value.Phone = users.Phone;
+            value.Password = users.Password;
             value.Faculty = users.Faculty;
             value.UserType = users.UserType;
             _context.Users.Add(value);
@@ -69,6 +71,7 @@ namespace Library_Management.Controllers
             value.Name = users.Name;
             value.Email = users.Email;
             value.Phone = users.Phone;
+            value.Password = users.Password;
             value.Faculty = users.Faculty;
             value.UserType = users.UserType;
             _context.SaveChanges();

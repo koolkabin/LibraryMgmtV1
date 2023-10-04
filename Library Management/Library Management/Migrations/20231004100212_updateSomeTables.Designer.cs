@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231004015500_DatabaseInitilization")]
-    partial class DatabaseInitilization
+    [Migration("20231004100212_updateSomeTables")]
+    partial class updateSomeTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,6 +136,32 @@ namespace Library_Management.Migrations
                     b.ToTable("LentBooks");
                 });
 
+            modelBuilder.Entity("Library_Management.Models.RequestBook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RequestBooks");
+                });
+
             modelBuilder.Entity("Library_Management.Models.ReturnBook", b =>
                 {
                     b.Property<int>("Id")
@@ -149,6 +175,9 @@ namespace Library_Management.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("lentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("returnDate")
                         .HasColumnType("datetime2");
@@ -185,9 +214,16 @@ namespace Library_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -238,6 +274,25 @@ namespace Library_Management.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Library_Management.Models.RequestBook", b =>
+                {
+                    b.HasOne("Library_Management.Models.Books", "Books")
+                        .WithMany("RequestBook")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library_Management.Models.User", "User")
+                        .WithMany("RequestBook")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Books");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Library_Management.Models.ReturnBook", b =>
                 {
                     b.HasOne("Library_Management.Models.Books", "Books")
@@ -271,12 +326,16 @@ namespace Library_Management.Migrations
                 {
                     b.Navigation("LentBook");
 
+                    b.Navigation("RequestBook");
+
                     b.Navigation("ReturnBook");
                 });
 
             modelBuilder.Entity("Library_Management.Models.User", b =>
                 {
                     b.Navigation("LentBook");
+
+                    b.Navigation("RequestBook");
 
                     b.Navigation("ReturnBook");
                 });

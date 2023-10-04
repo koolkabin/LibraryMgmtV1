@@ -30,6 +30,7 @@ namespace Library_Management.Models
 
         public ICollection<LentBook> LentBook { get; set; }
         public ICollection<ReturnBook> ReturnBook { get; set; }
+        public ICollection<RequestBook> RequestBook { get; set; }
     }
 
 }

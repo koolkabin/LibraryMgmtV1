@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<div class="container mt-4">
+    <div class="row">
+    <div class="col-6">
+        @if (TempData.ContainsKey("ErrorMessage"))
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        <form asp-action="Login" method="POST">
+            <div class="row">
+                <div class="col-2">
+                    <label>Email:</label>
+                </div>
+                <div class="col-10">
+                    <input class="form-control" type="email" name="email" required>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2">
+                    <label>Password:</label>
+                </div>
+                <div class="col-10">
+                    <input class="form-control" type="password" name="password" required>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-2">
+                </div>
+                <div class="col-10">
+                    <button type="submit" class="btn btn-success">Login</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
