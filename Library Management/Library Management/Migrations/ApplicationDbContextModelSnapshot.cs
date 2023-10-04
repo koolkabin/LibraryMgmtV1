@@ -39,7 +39,7 @@ namespace Library_Management.Migrations
                     b.ToTable("BookAuthors");
                 });
 
-            modelBuilder.Entity("Library_Management.Models.BookCatagory", b =>
+            modelBuilder.Entity("Library_Management.Models.BookCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace Library_Management.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookCatagories");
+                    b.ToTable("BookCategories");
                 });
 
             modelBuilder.Entity("Library_Management.Models.Books", b =>
@@ -205,7 +205,7 @@ namespace Library_Management.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Library_Management.Models.BookCatagory", "BookCatagory")
+                    b.HasOne("Library_Management.Models.BookCategory", "BookCategory")
                         .WithMany("Books")
                         .HasForeignKey("CatagoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -213,7 +213,7 @@ namespace Library_Management.Migrations
 
                     b.Navigation("BookAuthor");
 
-                    b.Navigation("BookCatagory");
+                    b.Navigation("BookCategory");
                 });
 
             modelBuilder.Entity("Library_Management.Models.LentBook", b =>
@@ -259,7 +259,7 @@ namespace Library_Management.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("Library_Management.Models.BookCatagory", b =>
+            modelBuilder.Entity("Library_Management.Models.BookCategory", b =>
                 {
                     b.Navigation("Books");
                 });

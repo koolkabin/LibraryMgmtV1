@@ -8,7 +8,7 @@ namespace Library_Management.Data
         public DbSet<Books> Books { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
-        public DbSet<BookCatagory> BookCatagories { get; set; }
+        public DbSet<BookCategory> BookCategories { get; set; }
         public DbSet<LentBook> LentBooks { get; set; }
         public DbSet<ReturnBook> ReturnBook { get; set; }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Library_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class TableCreation : Migration
+    public partial class DatabaseInitilization : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,7 @@ namespace Library_Management.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookCatagories",
+                name: "BookCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -34,7 +34,7 @@ namespace Library_Management.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookCatagories", x => x.Id);
+                    table.PrimaryKey("PK_BookCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,9 +82,9 @@ namespace Library_Management.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Books_BookCatagories_CatagoryId",
+                        name: "FK_Books_BookCategories_CatagoryId",
                         column: x => x.CatagoryId,
-                        principalTable: "BookCatagories",
+                        principalTable: "BookCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -194,7 +194,7 @@ namespace Library_Management.Migrations
                 name: "BookAuthors");
 
             migrationBuilder.DropTable(
-                name: "BookCatagories");
+                name: "BookCategories");
         }
     }
 }

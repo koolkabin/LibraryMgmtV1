@@ -21,9 +21,9 @@ namespace Library_Management.Models
         public int AuthorId {  get; set; }
         public BookAuthor BookAuthor { get; set; }
 
-        [ForeignKey("BookCatagory")]
+        [ForeignKey("BookCategory")]
         public int CatagoryId { get; set; }
-        public BookCatagory BookCatagory { get; set; }
+        public BookCategory BookCategory { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; }

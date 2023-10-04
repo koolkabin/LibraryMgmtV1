@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Library_Management.Models
 {
-    public class BookCatagory
+    public class BookCategory
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
