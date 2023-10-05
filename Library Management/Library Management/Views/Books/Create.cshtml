@@ -55,7 +55,7 @@
                         <label>Author</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" name="AuthorId">
+                        @Html.DropDownList("AuthorId", ViewBag.AuthorList, "Select Author", new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -64,7 +64,8 @@
                         <label>Catagories</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" name="CatagoryId">
+                        @Html.DropDownList("CategoryId", ViewBag.CategroyList, "Select Category", new { @class = "form-control" })
+
                     </div>
                 </div>
 

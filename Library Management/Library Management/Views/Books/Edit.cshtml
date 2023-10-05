@@ -1,14 +1,15 @@
-﻿@model User
+﻿@model Books
 @{
 }
 <div class="d-flex justify-content-between">
-    <h2>Update User</h2>
+    <h2>Add Books</h2>
     <a asp-action="Index" class="btn btn-secondary">Go Back</a>
 </div>
 <hr />
 <div class="container mt-4">
     <div class="row">
         <div class="col-6">
+
             <form asp-action="Edit" method="POST">
                 <input hidden name="id" value="@(Model.Id)">
                 <div class="row">
@@ -21,46 +22,55 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-2">
-                        <label>Email</label>
+                        <label>ISBN</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" value="@(Model.Email)" name="Email">
+                        <input class="form-control" value="@(Model.ISBN)" name="ISBN">
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-2">
-                        <label>Phone</label>
+                        <label>Count</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" value="@(Model.Phone)" name="Phone">
+                        <input class="form-control" value="@(Model.Count)" name="Count">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">
+                        <label>Publication</label>
+                    </div>
+                    <div class="col-10">
+                        <input class="form-control" value="@(Model.Publication)" name="Publication">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">
+                        <label>Level</label>
+                    </div>
+                    <div class="col-10">
+                        <input class="form-control" value="@(Model.Level)" name="Level">
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-2">
-                        <label>Password</label>
+                        <label>Author</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" value="@(Model.Password)" name="Password">
+                        <input class="form-control" value="@(Model.AuthorId)" name="AuthorId">
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-2">
-                        <label>Faculty</label>
+                        <label>Catagories</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" value="@(Model.Faculty)" name="Faculty">
+                        <input class="form-control" value="@(Model.CatagoryId)" name="CatagoryId">
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-2">
-                        <label>UserType</label>
-                    </div>
-                    <div class="col-10">
-                        <input class="form-control" value="@(Model.UserType)" name="UserType">
-                    </div>
-                </div>
+
 
                 <div class="row mt-3">
                     <div class="col-2">
@@ -71,8 +81,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
-
 </div>
-

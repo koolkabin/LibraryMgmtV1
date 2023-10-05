@@ -1,9 +1,11 @@
 ﻿using Library_Management.Data;
+using Library_Management.Filters;
 using Library_Management.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library_Management.Controllers
 {
+    [ServiceFilter(typeof(AdminAuthorizeFilter))]
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,0 +1,27 @@
+﻿@model List<LentBook>
+@{
+    int sn = 1;
+}
+
+<h2>Issued Books List</h2>
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>SN</th>
+            <th>Book Name</th>
+            <th>Issued Date</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(sn++)</td>
+                <td>@(item.Books.Name)</td>
+                <td>@(item.lentDate)</td>
+                <td>@(item.returnDate)</td>
+            </tr>
+        }
+    </tbody>
+</table>

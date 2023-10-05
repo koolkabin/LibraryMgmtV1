@@ -12,6 +12,7 @@ namespace Library_Management.Data
         public DbSet<LentBook> LentBooks { get; set; }
         public DbSet<ReturnBook> ReturnBook { get; set; }
         public DbSet<RequestBook> RequestBooks { get; set; }
+        public DbSet<RequestCancelledLog> RequestCancelledLog   { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     }

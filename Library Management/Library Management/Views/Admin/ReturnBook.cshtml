@@ -1,0 +1,42 @@
+﻿
+@model List<LentBook>
+@{
+    int sn = 1;
+}
+
+<h2>Issued Books List</h2>
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>SN</th>
+            <th>Book Name</th>
+            <th>User Name</th>
+            <th>Issued Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(sn++)</td>
+                <td>@(item.Books.Name)</td>
+                <td>@(item.User.Name)</td>
+                <td>@(item.lentDate)</td>
+
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="ReturnBook">
+                        <input type="hidden" name="Id" value="@item.Id" />
+                        <button type="submit" class="btn btn-primary">Return</button>
+                    </form>
+                </td>
+
+                @* or we can use get method with a tag but with different action name
+                <td>
+                    <a asp-controller="Admin" asp-action="ReturnBook"  class="btn btn-primary">Return</a>
+                </td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+

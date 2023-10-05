@@ -32,5 +32,9 @@ namespace Library_Management.Models
         public ICollection<ReturnBook> ReturnBook { get; set; }
         public ICollection<RequestBook> RequestBook { get; set; }
     }
-
+    public class VMBook
+    {
+        public IList<Books> TotalLibraryBookList { get; set; } = new List<Books>();
+        public IList<RequestBook> CurrentRequestBookList { get; set; } = new List<RequestBook>();
+    }
 }

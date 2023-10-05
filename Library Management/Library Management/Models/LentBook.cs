@@ -8,7 +8,7 @@ namespace Library_Management.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
-        public DateTime lentDate { get; set; }= DateTime.Now;
+        public DateTime lentDate { get; set; } = DateTime.Now;
         [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }
@@ -17,8 +17,7 @@ namespace Library_Management.Models
         public int BookId { get; set; }
         public Books Books { get; set; }
 
-        [Required]
-        public DateTime returnDate { get; set; }
+        public DateTime? returnDate { get; set; }
 
     }
 }

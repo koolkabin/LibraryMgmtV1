@@ -30,7 +30,7 @@ namespace Library_Management.Controllers
 
                     if (userData.UserType == EnumUserType.Admin)
                     {
-                        return RedirectToAction("Index", "Book");
+                        return RedirectToAction("Index", "Books");
                     }
                     else
                     {
