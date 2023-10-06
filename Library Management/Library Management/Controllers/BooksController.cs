@@ -40,7 +40,7 @@ namespace Library_Management.Controllers
             value.Name = books.Name;
             value.AuthorId = books.AuthorId;
             value.ISBN = books.ISBN;
-            value.CatagoryId = books.CatagoryId;
+            value.CategoryId = books.CategoryId;
             value.Level = books.Level;
             value.Count = books.Count;
             value.Publication = books.Publication;
@@ -78,7 +78,7 @@ namespace Library_Management.Controllers
             value.Name = books.Name;
             value.AuthorId = books.AuthorId;
             value.ISBN = books.ISBN;
-            value.CatagoryId = books.CatagoryId;
+            value.CategoryId = books.CategoryId;
             value.Level = books.Level;
             value.Count = books.Count;
             value.Publication = books.Publication;

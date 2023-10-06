@@ -22,7 +22,7 @@ namespace Library_Management.Models
         public BookAuthor BookAuthor { get; set; }
 
         [ForeignKey("BookCategory")]
-        public int CatagoryId { get; set; }
+        public int CategoryId { get; set; }
         public BookCategory BookCategory { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;

@@ -18,9 +18,9 @@ namespace Library_Management.Models
         public virtual RequestCancelledLog RequestCancelledLog { get; set; }
         public EnumRequestStatus RequestStatus { get; set; } = EnumRequestStatus.Pending;
 
-        public bool CanAccept => RequestStatus != EnumRequestStatus.Pending;
-        public bool CanReject => RequestStatus != EnumRequestStatus.Pending;
-        public bool CanCancel => RequestStatus != EnumRequestStatus.Pending;
+        public bool CanAccept => RequestStatus == EnumRequestStatus.Pending;
+        public bool CanReject => RequestStatus == EnumRequestStatus.Pending;
+        public bool CanCancel => RequestStatus == EnumRequestStatus.Pending;
     }
 
     public enum EnumRequestStatus
