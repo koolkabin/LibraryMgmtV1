@@ -20,6 +20,11 @@ namespace Library_Management.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult BookList()
+        {
             //if (_contextAccessor.HttpContext.Session.GetInt32("userId") == null)
             //{
             //    return RedirectToAction("Index", "Account");
@@ -45,7 +50,7 @@ namespace Library_Management.Controllers
             _context.RequestBooks.Add(reqBook);
 
             _context.SaveChanges();
-            return RedirectToAction("Index", "Student");
+            return RedirectToAction("BookList", "Student");
         }
 
         public IActionResult MyRequestBook()

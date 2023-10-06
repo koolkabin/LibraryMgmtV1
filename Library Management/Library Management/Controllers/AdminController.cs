@@ -18,11 +18,9 @@ namespace Library_Management.Controllers
             _contextAccessor = httpContextAccessor;
         }
 
-        [ServiceFilter(typeof(AdminAuthorizeFilter))]
         public IActionResult Index()
         {
-            var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
-            return View(bookList);
+            return View();
         }
 
         public IActionResult RequestedBookList()

@@ -1,55 +1,5 @@
-﻿@model VMBook
+﻿
 @{
-    int Sn = 1;
 }
-<h2 class="text-center">Book list</h2>
-<table id="myTable" class="display mt-4">
-    <thead>
-        <tr>
-            <th>SN</th>
-            <th>Name</th>
-            <th>Level</th>
-            <th>Publication</th>
-            <th>Book Author</th>
-            <th>Book Category</th>
-            <th>Book Count</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.TotalLibraryBookList)
-        {
-            <tr>
-                <td>@(Sn++)</td>
-                <td>@(item.Name)</td>
-                <td>@(item.Level)</td>
-                <td>@(item.Publication)</td>
-                <td>@(item.BookAuthor.Name)</td>
-                <td>@(item.BookCategory.Name)</td>
-                <td>@(item.Count)</td>
-                <td>
-                    @if (Model.CurrentRequestBookList.Any(x => x.BookId == item.Id))
-                    {
-                      <button type="button" class="btn btn-secondary">
-                          Pending
-                      </button>  
-                    }
-                    else
-                    {
-                        <form asp-action="RequestBook" asp-controller="Student" method="POST">
-                            <input name="bookId" hidden value="@(item.Id)">
-                            <button type="submit" class="btn btn-primary">
-                                Request
-                            </button>
-                        </form>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-<script>
-    $("#myTable").DataTable();
-</script>
+
+<h1>This is Student landing page</h1>
