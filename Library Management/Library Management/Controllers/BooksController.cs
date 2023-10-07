@@ -19,7 +19,7 @@ namespace Library_Management.Controllers
 
         public IActionResult Index()
         {
-            var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
+            var bookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).Include(x => x.Publication).Include(x => x.BookLevel).ToList();
             return View(bookList);
         }
 
@@ -28,22 +28,24 @@ namespace Library_Management.Controllers
         public IActionResult Create()
         {
             ViewBag.AuthorList = new SelectList(_context.BookAuthors.ToList(), "Id", "Name");
+            ViewBag.LevelList = new SelectList(_context.BookLevels.ToList(), "Id", "Name");
             ViewBag.CategroyList = new SelectList(_context.BookCategories.ToList(), "Id", "Name");
+            ViewBag.PublicationList = new SelectList(_context.Publications.ToList(), "Id", "Name");
             return View();
         }
 
         //Post for ADD New Data
         [HttpPost]
-        public IActionResult Create(Books books)
+        public IActionResult Create(Book books)
         {
-            Books value = new Books();
+            Book value = new Book();
             value.Name = books.Name;
             value.AuthorId = books.AuthorId;
             value.ISBN = books.ISBN;
             value.CategoryId = books.CategoryId;
-            value.Level = books.Level;
+            value.LevelId = books.LevelId;
             value.Count = books.Count;
-            value.Publication = books.Publication;
+            value.PublicationID = books.PublicationID;
             value.UpdateDate = DateTime.Now;
             _context.Books.Add(value);
             _context.SaveChanges();
@@ -56,7 +58,7 @@ namespace Library_Management.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            Books value = _context.Books.Find(id);
+            Book value = _context.Books.Find(id);
             _context.Books.Remove(value);
             _context.SaveChanges();
             return RedirectToAction("Index", "Books");
@@ -66,20 +68,20 @@ namespace Library_Management.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Books book = _context.Books.Where(x => x.Id == id).First();
+            Book book = _context.Books.Where(x => x.Id == id).First();
             return View(book);
         }
 
         //Post for Edit Data
         [HttpPost]
-        public IActionResult Edit(Books books, int id)
+        public IActionResult Edit(Book books, int id)
         {
-            Books value = _context.Books.Find(id);
+            Book value = _context.Books.Find(id);
             value.Name = books.Name;
             value.AuthorId = books.AuthorId;
             value.ISBN = books.ISBN;
             value.CategoryId = books.CategoryId;
-            value.Level = books.Level;
+            value.LevelId = books.LevelId;
             value.Count = books.Count;
             value.Publication = books.Publication;
             _context.SaveChanges();

@@ -7,9 +7,9 @@ namespace Library_Management.Models
         [Key]
         [ForeignKey("RequestBook")]
         public int RequestBookID { get; set; }
-        public DateTime CancelledDate { get; set; }
-        public int UserID { get; set; }
-        public string Remarks { get; set; }
         public virtual RequestBook RequestBook { get; set; }
+
+        public DateTime CancelledDate { get; set; }
+        public string Remarks { get; set; }
     }
 }

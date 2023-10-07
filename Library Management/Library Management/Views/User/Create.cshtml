@@ -1,4 +1,4 @@
-﻿
+﻿@model User
 @{
 }
 <div class="d-flex justify-content-between">
@@ -57,7 +57,7 @@
                         <label>UserType</label>
                     </div>
                     <div class="col-10">
-                        <input class="form-control" name="UserType">
+                        @Html.DropDownListFor(model => model.UserType, new SelectList(Enum.GetValues(typeof(EnumUserType))), "Select UserType", new { @class = "form-control" })
                     </div>
                 </div>
 

@@ -25,7 +25,8 @@ namespace Library_Management.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var user = new User();
+            return View(user);
         }
 
 

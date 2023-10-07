@@ -10,7 +10,7 @@ namespace Library_Management.Models
         [Required]
         public string Name { get; set; }
 
-        public ICollection<Books> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
 
     }
 

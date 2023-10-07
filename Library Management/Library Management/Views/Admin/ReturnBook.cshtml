@@ -1,5 +1,4 @@
-﻿
-@model List<LentBook>
+﻿@model List<LentBook>
 @{
     int sn = 1;
 }
@@ -11,7 +10,7 @@
             <th>SN</th>
             <th>Book Name</th>
             <th>User Name</th>
-            <th>Issued Date</th>
+            <th>Request Date</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -20,13 +19,13 @@
         {
             <tr>
                 <td>@(sn++)</td>
-                <td>@(item.Books.Name)</td>
-                <td>@(item.User.Name)</td>
-                <td>@(item.lentDate)</td>
+                <td>@(item.RequestBook.Books.Name)</td>
+                <td>@(item.RequestBook.User.Name)</td>
+                <td>@(item.RequestBook.RequestDate)</td>
 
                 <td>
                     <form method="post" asp-controller="Admin" asp-action="ReturnBook">
-                        <input type="hidden" name="Id" value="@item.Id" />
+                        <input type="hidden" name="Id" value="@item.RequestBookId" />
                         <button type="submit" class="btn btn-primary">Returned</button>
                     </form>
                 </td>

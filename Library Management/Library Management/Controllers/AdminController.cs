@@ -25,7 +25,11 @@ namespace Library_Management.Controllers
 
         public IActionResult RequestedBookList()
         {
-            var reqBookList = _context.RequestBooks.Include(x => x.Books).Include(x => x.User).ToList();
+            var reqBookList = _context.RequestBooks
+                .Include(x => x.Books)
+                .Include(x => x.User)
+                .Where(reqBook => reqBook.RequestStatus == EnumRequestStatus.Pending)
+                .ToList();
             return View(reqBookList);
         }
 
@@ -33,12 +37,12 @@ namespace Library_Management.Controllers
         {
             var reqBook = _context.RequestBooks.Where(x => x.Id == Id).FirstOrDefault();
             var book = _context.Books.Where(x => x.Id == reqBook.BookId).First();
+            reqBook.RequestStatus = EnumRequestStatus.Approved;
             var lentBook = new LentBook();
             book.Count = book.Count - 1;
-            lentBook.UserId = reqBook.UserId;
-            lentBook.BookId = reqBook.BookId;
+            lentBook.RequestBookId = reqBook.Id;
+            lentBook.lentDate = DateTime.Now;
             _context.LentBooks.Add(lentBook);
-            _context.RequestBooks.Remove(reqBook);
             _context.SaveChanges();
             return RedirectToAction("RequestedBookList", "Admin");
         }
@@ -46,7 +50,11 @@ namespace Library_Management.Controllers
         public IActionResult RejectBook(int Id)
         {
             var reqBook = _context.RequestBooks.Where(x => x.Id == Id).FirstOrDefault();
-            _context.RequestBooks.Remove(reqBook);
+            reqBook.RequestStatus = EnumRequestStatus.Rejected;
+            RequestCancelledLog reqCancelLog = new RequestCancelledLog();
+            reqCancelLog.Remarks = "Rejected By Admin.";
+            reqCancelLog.CancelledDate = DateTime.Now;
+            reqCancelLog.RequestBookID = reqBook.Id;
             _context.SaveChanges();
             return RedirectToAction("RequestedBookList", "Admin");
         }
@@ -54,22 +62,27 @@ namespace Library_Management.Controllers
         [HttpGet]
         public IActionResult ReturnBook()
         {
-            var LentBookList = _context.LentBooks
-                .Include(x => x.Books)
-                .Include(x => x.User)
-                .Where(lentBook => lentBook.returnDate == null)
+            var myLentBookList = _context.LentBooks
+                .Where(lentBook => lentBook.RequestBook.RequestStatus == EnumRequestStatus.Approved)
+                .Include(lentBook => lentBook.RequestBook)
+                .Include(lentBook => lentBook.RequestBook.Books)
+                .Include(lentBook => lentBook.RequestBook.User)
                 .ToList();
-            return View(LentBookList);
+            return View(myLentBookList);
 
         }
 
         [HttpPost]
         public IActionResult ReturnBook(int Id)
         {
-            var returnBook = _context.LentBooks.Where(x => x.Id == Id).FirstOrDefault();
-            var book = _context.Books.Where(x => x.Id == returnBook.BookId).First();
+            var reqbook = _context.RequestBooks.Where(x => x.RequestStatus == EnumRequestStatus.Approved).FirstOrDefault();
+            var book = _context.Books.Where(x => x.Id == reqbook.BookId).First();
+            reqbook.RequestStatus = EnumRequestStatus.Returned;
             book.Count = book.Count + 1;
-            returnBook.returnDate = DateTime.Now;
+            ReturnBook returnBook = new ReturnBook();
+            returnBook.RequestBookId = reqbook.Id;
+            returnBook.returnedDate = DateTime.Now;
+            returnBook.Remarks = "Book Returned";
             _context.SaveChanges();
             return RedirectToAction("ReturnBook", "Admin");
         }

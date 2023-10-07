@@ -5,19 +5,16 @@ namespace Library_Management.Models
 {
     public class LentBook
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Key, ForeignKey("RequestBook")]
+        public int RequestBookId { get; set; }
+        public virtual RequestBook RequestBook { get; set; }
         [Required]
-        public DateTime lentDate { get; set; } = DateTime.Now;
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public DateTime lentDate { get; set; }
 
-        [ForeignKey("Books")]
-        public int BookId { get; set; }
-        public Books Books { get; set; }
+        [Required]
+        public DateTime ExpectedDateToReturn => lentDate.AddDays(14);
 
-        public DateTime? returnDate { get; set; }
-
+        [NotMapped]
+        public int RemDays => (ExpectedDateToReturn - DateTime.Now).Days;
     }
 }

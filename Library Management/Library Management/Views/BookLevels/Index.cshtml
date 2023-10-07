@@ -1,23 +1,20 @@
-﻿@model List<Book>
+﻿
+@{
+}
+@model List<BookLevel>
 @{
     int sn = 1;
 }
 <div class="d-flex justify-content-between">
-    <h2>Book List</h2>
-    <a asp-action="Create" class="btn btn-success">Add Book</a>
+    <h2>Author List</h2>
+    <a asp-action="Create" class="btn btn-success">Add Author</a>
 </div>
 
 <table class="table mt-4">
     <thead class="table-dark">
         <tr>
             <th>SN</th>
-            <th>Book Name</th>
-            <th>ISBN</th>
-            <th>Level</th>
-            <th>Publication</th>
-            <th>Book Author</th>
-            <th>Book Category</th>
-            <th>Book Count</th>
+            <th>Author Name</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -27,12 +24,6 @@
             <tr>
                 <td>@(sn++)</td>
                 <td>@(item.Name)</td>
-                <td>@(item.ISBN)</td>
-                <td>@(item.BookLevel.Name)</td>
-                <td>@(item.Publication.Name)</td>
-                <td>@(item.BookAuthor.Name)</td>
-                <td>@(item.BookCategory.Name)</td>
-                <td>@(item.Count)</td>
                 <td>
                     <div class="d-flex" style="gap:10px">
                         <a asp-action="Delete" asp-route-id="@(item.Id)" class="btn btn-danger">

@@ -22,22 +22,22 @@
             <tr>
                 <td>@(Sn++)</td>
                 <td>@(item.Name)</td>
-                <td>@(item.Level)</td>
-                <td>@(item.Publication)</td>
+                <td>@(item.BookLevel.Name)</td>
+                <td>@(item.Publication.Name)</td>
                 <td>@(item.BookAuthor.Name)</td>
                 <td>@(item.BookCategory.Name)</td>
                 <td>@(item.Count)</td>
                 <td>
-                    @if (Model.CurrentRequestBookList.Any(x => x.BookId == item.Id))
-                    {
-                      <button type="button" class="btn btn-secondary">
-                          Pending
+                    @if (Model.CurrentRequestBookList.Any(x => x.BookId == item.Id && x.RequestStatus == EnumRequestStatus.Pending))
+                        {
+                      <button type="button" class="btn btn-warning">
+                            Pending
                       </button>  
                     }
-                    else if (Model.CurrentRequestBookList.Any(x => x.BookId == item.Id))
+                    else if (Model.CurrentRequestBookList.Any(x => x.BookId == item.Id && x.RequestStatus == EnumRequestStatus.Approved))
                     {
-                        <button type="button" class="btn btn-secondary">
-                            Pending
+                        <button type="button" class="btn btn-success">
+                            Approved
                         </button>
                     }
                     else

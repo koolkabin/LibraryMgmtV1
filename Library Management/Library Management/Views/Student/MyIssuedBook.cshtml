@@ -11,6 +11,7 @@
             <th>Book Name</th>
             <th>Issued Date</th>
             <th>Return Date</th>
+            <th>Due Date</th>
         </tr>
     </thead>
     <tbody>
@@ -18,9 +19,10 @@
         {
             <tr>
                 <td>@(sn++)</td>
-                <td>@(item.Books.Name)</td>
+               <td>@(item.RequestBook.Books.Name)</td>
                 <td>@(item.lentDate)</td>
-                <td>@(item.returnDate)</td>
+                <td>@(item.ExpectedDateToReturn)</td>
+                <td>@(item.RemDays)</td>
             </tr>
         }
     </tbody>

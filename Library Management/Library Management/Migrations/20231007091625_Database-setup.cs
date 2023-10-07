@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Library_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class createTable : Migration
+    public partial class Databasesetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,19 @@ namespace Library_Management.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Publications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -48,6 +61,7 @@ namespace Library_Management.Migrations
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Faculty = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -66,10 +80,10 @@ namespace Library_Management.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Count = table.Column<int>(type: "int", nullable: false),
-                    Publication = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublicationID = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
-                    CatagoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -83,9 +97,43 @@ namespace Library_Management.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Books_BookCategories_CatagoryId",
-                        column: x => x.CatagoryId,
+                        name: "FK_Books_BookCategories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "BookCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_Publications_PublicationID",
+                        column: x => x.PublicationID,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RequestBooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    RequestStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestBooks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RequestBooks_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RequestBooks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -94,55 +142,68 @@ namespace Library_Management.Migrations
                 name: "LentBooks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RequestBookId = table.Column<int>(type: "int", nullable: false),
                     lentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    returnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LentBooks", x => x.Id);
+                    table.PrimaryKey("PK_LentBooks", x => x.RequestBookId);
                     table.ForeignKey(
-                        name: "FK_LentBooks_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
+                        name: "FK_LentBooks_RequestBooks_RequestBookId",
+                        column: x => x.RequestBookId,
+                        principalTable: "RequestBooks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LentBooks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RequestCancelledLogs",
+                columns: table => new
+                {
+                    RequestBookID = table.Column<int>(type: "int", nullable: false),
+                    CancelledDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestCancelledLogs", x => x.RequestBookID);
+                    table.ForeignKey(
+                        name: "FK_RequestCancelledLogs_RequestBooks_RequestBookID",
+                        column: x => x.RequestBookID,
+                        principalTable: "RequestBooks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReturnBook",
+                name: "ReturnBooks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    returnDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false)
+                    RequestBookId = table.Column<int>(type: "int", nullable: false),
+                    returnedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReturnBook", x => x.Id);
+                    table.PrimaryKey("PK_ReturnBooks", x => x.RequestBookId);
                     table.ForeignKey(
-                        name: "FK_ReturnBook_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
+                        name: "FK_ReturnBooks_RequestBooks_RequestBookId",
+                        column: x => x.RequestBookId,
+                        principalTable: "RequestBooks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ReturnBook_Users_UserId",
+                        name: "FK_ReturnBooks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -151,14 +212,14 @@ namespace Library_Management.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_CatagoryId",
+                name: "IX_Books_CategoryId",
                 table: "Books",
-                column: "CatagoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LentBooks_BookId",
-                table: "LentBooks",
-                column: "BookId");
+                name: "IX_Books_PublicationID",
+                table: "Books",
+                column: "PublicationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LentBooks_UserId",
@@ -166,13 +227,18 @@ namespace Library_Management.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReturnBook_BookId",
-                table: "ReturnBook",
+                name: "IX_RequestBooks_BookId",
+                table: "RequestBooks",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReturnBook_UserId",
-                table: "ReturnBook",
+                name: "IX_RequestBooks_UserId",
+                table: "RequestBooks",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReturnBooks_UserId",
+                table: "ReturnBooks",
                 column: "UserId");
         }
 
@@ -183,7 +249,13 @@ namespace Library_Management.Migrations
                 name: "LentBooks");
 
             migrationBuilder.DropTable(
-                name: "ReturnBook");
+                name: "RequestCancelledLogs");
+
+            migrationBuilder.DropTable(
+                name: "ReturnBooks");
+
+            migrationBuilder.DropTable(
+                name: "RequestBooks");
 
             migrationBuilder.DropTable(
                 name: "Books");
@@ -196,6 +268,9 @@ namespace Library_Management.Migrations
 
             migrationBuilder.DropTable(
                 name: "BookCategories");
+
+            migrationBuilder.DropTable(
+                name: "Publications");
         }
     }
 }

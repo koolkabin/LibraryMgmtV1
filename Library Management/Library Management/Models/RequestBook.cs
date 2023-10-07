@@ -8,15 +8,20 @@ namespace Library_Management.Models
         public int Id { get; set; }
         [Required]
         public DateTime RequestDate { get; set; }
+
         [ForeignKey("User")]
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
         [ForeignKey("Books")]
         public int BookId { get; set; }
-        public virtual Books Books { get; set; }
-        public virtual RequestCancelledLog RequestCancelledLog { get; set; }
+        public virtual Book Books { get; set; }
+
         public EnumRequestStatus RequestStatus { get; set; } = EnumRequestStatus.Pending;
+
+        public virtual ICollection<ReturnBook> ReturnBook { get; set; }
+        public virtual ICollection<LentBook> LentBook { get; set; }
+        public virtual ICollection<RequestCancelledLog> RequestCancelledLog { get; set; }
 
         public bool CanAccept => RequestStatus == EnumRequestStatus.Pending;
         public bool CanReject => RequestStatus == EnumRequestStatus.Pending;
@@ -28,6 +33,7 @@ namespace Library_Management.Models
         Pending = 0,
         Approved = 1,
         Rejected = 2,
-        Cancelled = 3
+        Cancelled = 3,
+        Returned = 4
     }
 }

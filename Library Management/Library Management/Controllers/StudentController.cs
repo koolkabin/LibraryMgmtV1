@@ -34,53 +34,66 @@ namespace Library_Management.Controllers
             //    return RedirectToAction("ErrorPage", "Book");
             //}
             VMBook bookList = new VMBook();
-            bookList.TotalLibraryBookList = _context.Books.Include(x => x.BookAuthor).Include(x => x.BookCategory).ToList();
-            bookList.CurrentRequestBookList = _context.RequestBooks.Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId")).ToList();
+            bookList.TotalLibraryBookList = _context.Books
+                .Include(x => x.BookAuthor)
+                .Include(x => x.BookCategory)
+                .Include(x => x.Publication)
+                .Include(x => x.BookLevel)
+                .ToList();
+
+            bookList.CurrentRequestBookList = _context.RequestBooks
+                .Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId")).ToList();
             return View(bookList);
         }
 
         public IActionResult RequestBook(int bookId)
         {
             int? id = _contextAccessor.HttpContext.Session.GetInt32("userId");
-
             RequestBook reqBook = new RequestBook();
             reqBook.BookId = bookId;
             reqBook.UserId = (int)id;
             reqBook.RequestDate = DateTime.Now;
             _context.RequestBooks.Add(reqBook);
-
             _context.SaveChanges();
             return RedirectToAction("BookList", "Student");
         }
 
         public IActionResult MyRequestBook()
         {
-            var myReqBookList = _context.RequestBooks.Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId")).Include(x => x.Books).ToList();
+            var myReqBookList = _context.RequestBooks
+                .Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId"))
+                .Where(reqBook => reqBook.RequestStatus == EnumRequestStatus.Pending)
+                .Include(x => x.Books).ToList();
             return View(myReqBookList);
         }
 
         public IActionResult ReqCancel(int Id)
         {
             var reqBook = _context.RequestBooks.Where(x => x.Id == Id).FirstOrDefault();
-            _context.RequestBooks.Remove(reqBook);
+            RequestCancelledLog reqCancelLog = new RequestCancelledLog();
+            reqBook.RequestStatus = EnumRequestStatus.Cancelled;
+            reqCancelLog.CancelledDate = DateTime.Now;
+            reqCancelLog.RequestBookID = reqBook.Id;
+            reqCancelLog.Remarks = "Rejected By User.";
+            _context.RequestCancelledLogs.Add(reqCancelLog);
             _context.SaveChanges();
             return RedirectToAction("MyRequestBook", "Student");
         }
 
         public IActionResult MyIssuedBook()
         {
+            var userId = _contextAccessor.HttpContext.Session.GetInt32("userId");
             var myLentBookList = _context.LentBooks
-                .Where(x => x.UserId == _contextAccessor.HttpContext.Session.GetInt32("userId"))
-                .Where(lentBook => lentBook.returnDate == null)
-                .Include(x => x.Books)
+                .Where(lentBook => lentBook.RequestBook.UserId == userId && lentBook.RequestBook.RequestStatus == EnumRequestStatus.Approved)
+                .Include(lentBook => lentBook.RequestBook)
+                .Include(lentBook => lentBook.RequestBook.Books)
                 .ToList();
             return View(myLentBookList);
+
+
         }
 
-        public IActionResult ReqReturn(int Id)
-        {
-            return RedirectToAction("MyIssuedBook", "Student");
-        }
+
 
         [HttpGet]
        public IActionResult EditProfile()

@@ -5,17 +5,14 @@ namespace Library_Management.Models
 {
     public class ReturnBook
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Key]
+        [ForeignKey("RequestBook")]
+        public int RequestBookId { get; set; }
+        public virtual RequestBook RequestBook { get; set; }
+        
         [Required]
-        public DateTime returnDate { get; set; } = DateTime.Now;
-        public DateTime lentDate { get; set; }
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public DateTime returnedDate { get; set; }
+        public string Remarks { get; set; }
 
-        [ForeignKey("Books")]
-        public int BookId { get; set; }
-        public Books Books { get; set; }
     }
 }

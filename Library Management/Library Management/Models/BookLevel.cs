@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Library_Management.Models
 {
-    public class BookCategory
+    public class BookLevel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -11,6 +11,7 @@ namespace Library_Management.Models
         public string Name { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
+
     }
 
 }
